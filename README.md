@@ -1,1 +1,1 @@
-# synergy_optimizer_portfolio
+# Otimizador de Carteiras
