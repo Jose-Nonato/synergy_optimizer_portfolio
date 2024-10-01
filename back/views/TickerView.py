@@ -42,3 +42,12 @@ def ticket_holders(ticker: str, token: str = Depends(oauth2scheme)):
     if current_user is None:
         raise HTTPException(status_code=401, detail='Invalid token')
     return asset.asset_majors_holders()
+
+
+@router.get('/ticker-data')
+def ticker_data(ticker: str, token: str = Depends(oauth2scheme)):
+    current_user = AuthController.get_current_user(token)
+    if current_user is None:
+        raise HTTPException(status_code=401, detail='Invalid token')
+    asset = TickerController.get_asset_data(ticker)
+    return asset
