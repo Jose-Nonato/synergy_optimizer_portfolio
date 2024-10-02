@@ -1,5 +1,5 @@
 <template>
-    {{ message }}
+  {{ client_name }}
 </template>
 <script>
 import { api } from 'src/boot/axios'
@@ -7,17 +7,21 @@ export default {
   name: 'DashboardAssets',
   data () {
     return {
-      message: 'Dashboard'
+      message: 'Dashboard',
+      client_name: ''
     }
   },
   mounted () {
-    this.teste()
+    this.get_client_name()
   },
   methods: {
-    teste () {
+    get_client_name () {
       api.get('/users/me')
         .then(response => {
-          console.log(response)
+          this.client_name = response.data.name
+        })
+        .catch(error => {
+          console.error('Error ao capturar nome do banco', error)
         })
     }
   }
