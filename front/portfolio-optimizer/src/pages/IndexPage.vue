@@ -38,22 +38,29 @@
   </div>
 </template>
 <script>
-import { ref } from 'vue'
+import { api } from 'src/boot/axios'
 export default {
-  setup () {
-    const user = ref(null)
-    const password = ref(null)
+  name: 'IndexPage',
+  data () {
     return {
-      user,
-      password,
+      user: '',
+      password: ''
+    }
+  },
+  methods: {
+    onSubmit () {
+      const data = new URLSearchParams()
+      data.append('username', this.user)
+      data.append('password', this.password)
 
-      onSubmit () {
-        alert('Formulário enviado!')
-      },
-      onReset () {
-        user.value = null
-        password.value = null
-      }
+      api.post('/token', data)
+        .then((resp) => {
+          localStorage.setItem('access_token', resp.data.access_token)
+          this.$router.push('/dashboard')
+        })
+        .catch((error) => {
+          console.log('Erro ao fazer login:', error)
+        })
     }
   }
 }
