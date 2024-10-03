@@ -11,7 +11,7 @@
                     :options="options"
                     @click="navigateTo(model)"
                 />
-                <p>Bem vindo,<br/><span class="text-weight-medium">{{ client_name }}</span>!</p>
+                <div>Bem vindo,<br/><span class="text-weight-medium">{{ client_name }}</span>!</div>
             </div>
         </q-toolbar>
         <q-page-container>
