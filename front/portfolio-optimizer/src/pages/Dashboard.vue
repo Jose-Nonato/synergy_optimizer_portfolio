@@ -9,7 +9,7 @@
     :filter="searchInput"
     >
     <template v-slot:top>
-        <div class="text-subtitle1 q-pa-md">Recomendações de Ativos</div>
+        <div class="text-subtitle1 text-weight-bold q-pa-md">Recomendações de Ativos</div>
         <q-space />
         <q-input
           v-model="searchInput"
@@ -36,6 +36,17 @@
           options-cover
         />
       </template>
+      <template v-slot:body-cell-actions="props">
+        <q-td :props="props">
+          <q-btn
+            icon="visibility"
+            color="indigo"
+            flat
+            @click="viewTicker(props.row.papel)"
+            class="q-mr-sm"
+          />
+        </q-td>
+      </template>
     </q-table>
   </div>
 </template>
@@ -48,6 +59,7 @@ export default {
       message: 'Dashboard',
       tickers: [],
       cols: [
+        { name: 'actions', label: 'Ações', align: 'center' },
         { name: 'papel', label: 'Papel', field: 'papel', align: 'left' },
         { name: 'cotacao', label: 'Cotação', field: 'cotacao', align: 'left', sortable: true, format: val => `R$ ${this.format_price(val, 2)}` },
         { name: 'pl', label: 'P/L', field: 'pl', align: 'left', sortable: true, format: val => `${this.format_price(val, 2)}` },
@@ -70,7 +82,7 @@ export default {
         { name: 'divbpatr', label: 'Dív. Brut/Patrim', field: 'divbpatr', align: 'left', sortable: true, format: val => `${this.format_price(val, 2)}` },
         { name: 'c5y', label: 'Cresc. Rec. 5a', field: 'c5y', align: 'left', sortable: true, format: val => `${this.format_percent(val)}` }
       ],
-      visibleColumns: ['papel', 'cotacao', 'pl', 'pvp', 'psr', 'dy', 'pa', 'pcg', 'pebit', 'pacl', 'evebit', 'evebitda', 'mrgebit', 'mrgliq', 'roic', 'roe', 'liqc', 'liq2m', 'patrliq', 'divbpatr', 'c5y'],
+      visibleColumns: ['actions', 'papel', 'cotacao', 'pl', 'pvp', 'psr', 'dy', 'pa', 'pcg', 'pebit', 'pacl', 'evebit', 'evebitda', 'mrgebit', 'mrgliq', 'roic', 'roe', 'liqc', 'liq2m', 'patrliq', 'divbpatr', 'c5y'],
       searchInput: ''
     }
   },
@@ -81,8 +93,6 @@ export default {
     get_data_tickers () {
       api.get('/all-tickers')
         .then(response => {
-          console.log(typeof response.data)
-          console.log(typeof this.cols)
           this.tickers = response.data
         })
         .catch(error => {
@@ -95,6 +105,9 @@ export default {
     },
     format_percent (value) {
       return `${(value).toFixed(2)}%`
+    },
+    viewTicker (ticker) {
+      this.$router.push({ name: 'DetailsTicker', params: { ticker } })
     }
   }
 }
