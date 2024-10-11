@@ -24,6 +24,5 @@ class TickerController:
 
     @staticmethod
     def get_asset_data(ticker):
-        print(ticker)
         data = yf.download(ticker, start='2015-01-01' , progress=False)
         return data.to_json()

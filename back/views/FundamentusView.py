@@ -15,3 +15,12 @@ def all_tickers(token: str = Depends(oauth2scheme)):
         raise HTTPException(status_code=401, detail='Invalid token')
     data = FundamentusController.get_all_papers()
     return data
+
+
+@router.get('/get-paper')
+def get_paper(ticker: str, token: str = Depends(oauth2scheme)):
+    current_user = AuthController.get_current_user(token)
+    if current_user is None:
+        raise HTTPException(status_code=401, detail='Invalid token')
+    data = FundamentusController.get_paper(ticker)
+    return data

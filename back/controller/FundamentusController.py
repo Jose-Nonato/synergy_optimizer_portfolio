@@ -1,4 +1,5 @@
 import fundamentus as fund
+import json
 
 
 class FundamentusController:
@@ -38,3 +39,10 @@ class FundamentusController:
         data = data[data['pl'] > 0]
         array_data = FundamentusController.df_to_array(data)
         return array_data
+    
+
+    @staticmethod
+    def get_paper(ticker):
+        df = fund.get_papel(ticker)
+        json_str = df.to_json(orient='records')
+        return json.loads(json_str)
